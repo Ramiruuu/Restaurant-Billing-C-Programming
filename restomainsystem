@@ -1,0 +1,163 @@
+#include <stdio.h>
+#define MAX_ITEMS 10
+
+int main() 
+{
+	printf("\n=========================================================\n");
+    printf("Welcome to 'Sarap sa CDO' - Where Flavor Meets Fun\n");
+    printf("Located at Osmena Street beside Unicity\n");
+    printf("Open from Monday to Friday (8:00 am to 7:00 pm) \n");
+    printf("\n=========================================================\n");
+    
+    const char* dishes[] = 
+	{
+        "Halo-Halo", "Mango Float", "Leche Flan",
+        "Kinilaw nga isda", "Lato na salad", "Humba",
+        "Adobo", "Lechon Baboy/Manok", "Kare-kare nga Kanding"
+    };
+    
+    float prices[] = {60, 70, 80, 80, 90, 100, 120, 140, 160};
+    const char* currency = "PHP";
+    
+	printf("=========================================================\n");
+    printf("Prices per serving below :\n"); // MENU 
+    printf("\nDesserts:\n");
+    printf("1. Halo-Halo              %s %.2f\n", currency, prices[0]);
+    printf("2. Mango Float            %s %.2f\n", currency, prices[1]);
+    printf("3. Leche Flan             %s %.2f\n", currency, prices[2]);
+
+    printf("\nAppetizers:\n");
+    printf("4. Kinilaw nga isda       %s %.2f\n", currency, prices[3]);
+    printf("5. Lato na Salad          %s %.2f\n", currency, prices[4]);
+    printf("6. Humba                  %s %.2f\n", currency, prices[5]);
+
+    printf("\nMain Courses:\n");
+    printf("7. Adobo                  %s %.2f\n", currency, prices[6]);
+    printf("8. Lechon Baboy/Manok     %s %.2f\n", currency, prices[7]);
+    printf("9. Kare-kare nga Kanding  %s %.2f\n", currency, prices[8]);
+
+    printf("=========================================================\n");
+
+    char orderChoice; // ORDER CHOICE
+    printf("Would you like to order? (Y for Yes, N for No): ");
+    scanf(" %c", &orderChoice);
+    printf("=========================================================\n");
+
+    if (orderChoice == 'N' || orderChoice == 'n') {
+        printf("Thank you for visiting our Restaurant! Have a great day!\n");
+        return 0;
+    } else if (orderChoice != 'Y' && orderChoice != 'y') 
+	{
+        return 1;
+    }
+
+    float totalBill = 0.0;
+    int order[MAX_ITEMS] = {0};
+    int quantities[MAX_ITEMS] = {0};
+    int itemCount = 0;
+    
+
+    while (1) { // adding orders
+        printf("Good Choice! Please enter the number of the dish you'd like to order >,< (Press 10 to finish): \n");
+        int choice;
+        scanf("%d", &choice);
+        printf("=========================================================\n");
+			
+        if (choice == 10) {
+            break;
+        }
+
+        if (choice < 1 || choice > 9) {
+            printf("Invalid choice. Please enter a number between 1 and 10.\n");
+            continue;
+        }
+
+        printf("How many of the chosen food do you want: ");
+        int quantity;
+        scanf("%d", &quantity);
+
+        if (quantity < 1) {
+            printf("Invalid! Please enter a positive number.\n");
+            continue;
+        }
+
+        order[itemCount] = choice;
+        quantities[itemCount] = quantity;
+        itemCount++;
+
+        float cost = prices[choice - 1] * quantity; // adding quantity
+        totalBill += cost;
+        printf("Added to your order: %s x %d %s %.2f\n", dishes[choice - 1], quantity, currency, cost);
+        printf("=========================================================\n");
+    }
+    
+    printf("Items Ordered: \n");
+    printf("=========================================================\n");;
+    
+    for (int i = 0; i < itemCount; ++i) { // calculation of the bill
+        printf("%s x %d\n", dishes[order[i] - 1], quantities[i]);
+    }
+    printf("\nYour total bill is: %s %.2f\n", currency, totalBill); //displaying the total bill
+
+    printf("=========================================================\n");
+    
+    printf("How would you like to pay the bill?\n"); // payment option
+    printf("1. GCash\n");
+    printf("2. Cash\n");
+
+    int paymentChoice;
+    printf("Choose a number for how you will pay your bills: ");
+    scanf("%d", &paymentChoice);
+    printf("=========================================================\n");;
+
+    switch (paymentChoice) {
+        case 1: {
+            char phoneNum[100];
+            char gname[100];
+
+            printf("Enter your Phone Number: ");
+            scanf("%s", phoneNum);
+
+            printf("Enter your Gcash name: ");
+            scanf("%s", gname);
+			printf("=========================================================\n");
+            printf("\nCharging %s %.2f to your GCash account name @ %s.Thank you!\n", currency, totalBill, gname);
+            break;
+        }
+        case 2: {
+            float cashPaid;
+            do {
+                printf("Enter the amount of cash you are paying: %s ", currency);
+                scanf("%f", &cashPaid);
+
+                if (cashPaid < totalBill) {
+                    printf("Insufficient payment. Please pay the full amount.\n");
+                } else {
+                    break;
+                }
+            } while (1);
+
+            if (cashPaid > totalBill) {
+                float change = cashPaid - totalBill;
+                printf("Thank you for paying! Your change: %s %.2f\n", currency, change);
+            } else {
+                printf("Thank you for paying!\n");
+            }
+            break;
+        }
+        default:
+            printf("Invalid payment choice. Please choose a valid option.\n");
+            break;
+    }
+
+    printf("=========================================================\n");
+	printf("For online orders contact us at sarapsacdo@gmail.com\n");
+	printf("or\n");
+	printf("Call us at 09650423556/09551621672\n");
+	printf("=========================================================\n");
+	
+	printf("\nEnjoy your meal!\n");
+	printf("=========================================================\n");
+	
+    return 0;
+}
